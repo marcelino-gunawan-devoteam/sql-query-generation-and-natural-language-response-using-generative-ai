@@ -6,6 +6,7 @@ This project demonstrates how to use a generative AI model to answer questions b
 - Setup
 - How It Works
 - Code Explanation and Example Usage
+For the full code, please chect this [link] [https://github.com/marcelino-gunawan-devoteam/sql-query-generation-and-natural-language-response-using-generative-ai/blob/main/main.py]
 
 ## Setup
 
