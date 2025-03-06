@@ -75,11 +75,13 @@ Then, we provide the input data:
 
 ```python
 input_data = {"question": "Generate an SQL query to find out how many artists are there in the `artist` table."}
+```
 
 The output after parsing will be the SQL query like this:
 
 ```sql
 SELECT COUNT(*) AS NumberOfArtists FROM artist;
+```
 
 The LLM generates the SQL query to answer the user's question.
 
@@ -95,6 +97,7 @@ Question: {question}
 SQL Query: {query}
 SQL Response: {response}"""
 prompt = ChatPromptTemplate.from_template(template)
+```
 
 Using the invoke method to get the final output:
 
@@ -107,12 +110,15 @@ full_chain = (
     | prompt
     | llm
 )
+```
 
 The output will be something like:
 
 ```text
 "Based on the data in the artist table, there are a total of 275 artists."
+```
 The number 275 actually comes from the first chain from the SQL query result:
 
 ```sql
 SELECT COUNT(*) AS NumberOfArtists FROM artist;
+```
