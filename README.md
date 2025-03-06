@@ -5,8 +5,7 @@ This project demonstrates how to use a generative AI model to answer questions b
 ## Table of Contents
 - Setup
 - How It Works
-- Code Explanation
-- Example Usage
+- Code Explanation and Example Usage
 
 ## Setup
 
@@ -54,3 +53,56 @@ This project demonstrates how to use a generative AI model to answer questions b
 
 6. **Full Chain Execution**:
     - Combine all steps into a full chain to generate the SQL query, run it, and produce a user-friendly answer.
+  
+## Code Explanation and Example Usage
+
+We actually need two chains, one for generating the SQL query and the second to create the natural language response:
+
+## 1. SQL Query Generation Chain
+
+- First, we need to create a chain that instructs the LLM to generate an SQL query based on the database schema and the user's question.
+
+- It uses a template like this:
+  ```python
+  template = """Based on the table schema below, write a SQL query that would answer the user's question:
+  {schema}
+
+  Question: {question}
+  SQL Query:"""
+  prompt = ChatPromptTemplate.from_template(template)
+
+Then, we provide the input data:
+
+input_data = {"question": "Generate an SQL query to find out how many artists are there in the `artist` table."}
+The output after parsing will be the SQL query like this:
+
+SELECT COUNT(*) AS NumberOfArtists FROM artist;
+The LLM generates the SQL query to answer the user's question.
+
+This chain instructs the LLM to generate a natural language response based on the schema, question, SQL query, and SQL response.
+
+Example template:
+
+template = """Based on the table schema below, question, sql query and sql response, write a natural language response:
+{schema}
+
+Question: {question}
+SQL Query: {query}
+SQL Response: {response}"""
+prompt = ChatPromptTemplate.from_template(template)
+Using the invoke method to get the final output:
+
+full_chain = (
+    RunnablePassthrough.assign(query=lambda vars: parse_sql_output(sql_chain.invoke(vars).content)).assign(
+        schema=get_schema,
+        response=lambda vars: run_query(vars["query"]),
+    )
+    | prompt
+    | llm
+)
+The output will be something like:
+
+"Based on the data in the artist table, there are a total of 275 artists."
+The number 275 actually comes from the first chain from the SQL query result:
+
+SELECT COUNT(*) AS NumberOfArtists FROM artist;
