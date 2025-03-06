@@ -60,9 +60,9 @@ We actually need two chains, one for generating the SQL query and the second to 
 
 ## 1. SQL Query Generation Chain
 
-- First, we need to create a chain that instructs the LLM to generate an SQL query based on the database schema and the user's question.
+First, we need to create a chain that instructs the LLM to generate an SQL query based on the database schema and the user's question.
 
-- It uses a template like this:
+It uses a template like this:
   ```python
   template = """Based on the table schema below, write a SQL query that would answer the user's question:
   {schema}
@@ -85,6 +85,7 @@ SELECT COUNT(*) AS NumberOfArtists FROM artist;
 
 The LLM generates the SQL query to answer the user's question.
 
+## 2. Natural Language Response Chain
 This chain instructs the LLM to generate a natural language response based on the schema, question, SQL query, and SQL response.
 
 Example template:
