@@ -73,16 +73,21 @@ We actually need two chains, one for generating the SQL query and the second to 
 
 Then, we provide the input data:
 
+```python
 input_data = {"question": "Generate an SQL query to find out how many artists are there in the `artist` table."}
+
 The output after parsing will be the SQL query like this:
 
+```sql
 SELECT COUNT(*) AS NumberOfArtists FROM artist;
+
 The LLM generates the SQL query to answer the user's question.
 
 This chain instructs the LLM to generate a natural language response based on the schema, question, SQL query, and SQL response.
 
 Example template:
 
+```python
 template = """Based on the table schema below, question, sql query and sql response, write a natural language response:
 {schema}
 
@@ -90,8 +95,10 @@ Question: {question}
 SQL Query: {query}
 SQL Response: {response}"""
 prompt = ChatPromptTemplate.from_template(template)
+
 Using the invoke method to get the final output:
 
+```python
 full_chain = (
     RunnablePassthrough.assign(query=lambda vars: parse_sql_output(sql_chain.invoke(vars).content)).assign(
         schema=get_schema,
@@ -100,9 +107,12 @@ full_chain = (
     | prompt
     | llm
 )
+
 The output will be something like:
 
+```text
 "Based on the data in the artist table, there are a total of 275 artists."
 The number 275 actually comes from the first chain from the SQL query result:
 
+```sql
 SELECT COUNT(*) AS NumberOfArtists FROM artist;
