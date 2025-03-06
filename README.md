@@ -126,3 +126,6 @@ The number 275 actually comes from the first chain from the SQL query result:
 ```sql
 SELECT COUNT(*) AS NumberOfArtists FROM artist;
 ```
+
+For the full code, please check this [link](https://github.com/marcelino-gunawan-devoteam/sql-query-generation-and-natural-language-response-using-generative-ai/blob/main/main.py)
+
